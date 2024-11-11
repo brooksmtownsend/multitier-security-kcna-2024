@@ -1,0 +1,8 @@
+github.com/bytecodealliance/wasm-tools-go v0.3.1 h1:9Q9PjSzkbiVmkUvZ7nYCfJ02mcQDBalxycA3s8g7kR4=
+github.com/bytecodealliance/wasm-tools-go v0.3.1/go.mod h1:vNAQ8DAEp6xvvk+TUHah5DslLEa76f4H6e737OeaxuY=
+github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
+github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+go.bytecodealliance.org v0.4.0 h1:SRwgZIcXR54AmbJg9Y3AMgDlZlvD8dffteBYW+nCD3k=
+go.bytecodealliance.org v0.4.0/go.mod h1:hkdjfgQ/bFZYUucnm9cn0Q8/SHO3iT0rzskYlkV4Jy0=
+golang.org/x/oauth2 v0.24.0 h1:KTBBxWqUa0ykRPLtV69rRto9TLXcqYkeswu48x/gvNE=
+golang.org/x/oauth2 v0.24.0/go.mod h1:XYTD2NtWslqkgxebSiOHnXEap4TF09sJSc7H1sXbhtI=
