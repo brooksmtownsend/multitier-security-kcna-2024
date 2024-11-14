@@ -1,0 +1,64 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: dev-48mklb-http-hello-world
+  annotations:
+    version: 01JCN98EH2ZARVFAWFSNVW2WNM
+  labels:
+    wasmcloud.dev/generated-by: wash-dev
+spec:
+  policies:
+    - name: nats-kv
+      type: policy.secret.wasmcloud.dev/v1alpha1
+      properties:
+        backend: nats-kv
+  components:
+    - name: 48mklb-http-hello-world
+      type: component
+      properties:
+        image: file:///Users/brooks/demo/multitier-security/build/http_hello_world_s.wasm
+        id: 48mklb-http-hello-world
+        secrets:
+          - name: client_id
+            properties:
+              policy: nats-kv
+              key: client_id
+          - name: client_secret
+            properties:
+              policy: nats-kv
+              key: client_secret
+      traits:
+        - type: spreadscaler
+          properties:
+            instances: 100
+        - type: link
+          properties:
+            namespace: wasi
+            package: http
+            interfaces:
+              - outgoing-handler
+            target:
+              name: 48mklb-dep-http-client
+    - name: 48mklb-dep-http-server
+      type: capability
+      properties:
+        image: ghcr.io/wasmcloud/http-server:0.24.0
+      traits:
+        - type: link
+          properties:
+            namespace: wasi
+            package: http
+            interfaces:
+              - incoming-handler
+            source:
+              config:
+                - name: wasi-http-config
+                  properties:
+                    address: 127.0.0.1:8000
+            target:
+              name: 48mklb-http-hello-world
+    - name: 48mklb-dep-http-client
+      type: capability
+      properties:
+        image: ghcr.io/wasmcloud/http-client:0.12.1
+      traits: []

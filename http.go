@@ -11,10 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	"go.wasmcloud.dev/component/gen/wasmcloud/secrets/reveal"
-	"go.wasmcloud.dev/component/gen/wasmcloud/secrets/store"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
 )
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +54,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
         <li>Protocol: %s</li>
     </ul>
     <p>Try visiting <a href="/hello">/hello</a> for a different endpoint!</p>
+    <p>Try visiting <a href="/login">/login</a> for a secure different endpoint!</p>
 </body>
 </html>`,
 		time.Now().Format(time.RFC1123),
@@ -86,6 +84,7 @@ func helloHandler(w http.ResponseWriter, _ *http.Request) {
 	fmt.Fprintf(w, "Hello from Go!\n")
 }
 
+// Implement a file-based counter
 func helloFileHandler(w http.ResponseWriter, _ *http.Request) {
 	// Read the current count from file
 	count := 0
@@ -156,7 +155,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "User Info: %s\n", userInfo)
 }
 
-// getUserInfo fetches user information from GitHub's API using the authenticated client.
+// // getUserInfo fetches user information from GitHub's API using the authenticated client.
 func getUserInfo(client *http.Client) (string, error) {
 	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
 	if err != nil {
@@ -194,19 +193,26 @@ func getUserInfo(client *http.Client) (string, error) {
 // Fetch the OAuth2 config including the client ID and secret
 // as secrets.
 func oauthConfig() (oauth2.Config, error) {
-	clientId := store.Get("client_id")
-	if err := clientId.Err(); err != nil {
-		return oauth2.Config{}, fmt.Errorf("getting client ID: %w", err)
-	}
-	clientSecret := store.Get("client_secret")
-	if err := clientSecret.Err(); err != nil {
-		return oauth2.Config{}, fmt.Errorf("getting client secret: %w", err)
-	}
-	return oauth2.Config{
-		ClientID:     reveal.Reveal(*clientId.OK()).String(),
-		ClientSecret: reveal.Reveal(*clientSecret.OK()).String(),
-		RedirectURL:  "http://127.0.0.1:8080/oauth/callback",
-		Scopes:       []string{},
-		Endpoint:     github.Endpoint,
-	}, nil
+	// clientId := secretstore.Get("client_id")
+	// if err := clientId.Err(); err != nil {
+	// 	return oauth2.Config{}, fmt.Errorf("getting client ID: %s", err.String())
+	// }
+	// clientSecret := secretstore.Get("client_secret")
+	// if err := clientSecret.Err(); err != nil {
+	// 	return oauth2.Config{}, fmt.Errorf("getting client secret: %s", err.String())
+	// }
+
+	// fmt.Fprintf(os.Stderr, "Client ID: %d\n", clientId.OK())
+	// fmt.Fprintf(os.Stderr, "Client Secret: %d\n", clientSecret.OK())
+
+	// clientIdReal := reveal.Reveal(*clientId.OK())
+	// clientSecretReal := reveal.Reveal(*clientSecret.OK())
+	// return oauth2.Config{
+	// 	ClientID:     *clientIdReal.String_(),
+	// 	ClientSecret: *clientSecretReal.String_(),
+	// 	RedirectURL:  "http://127.0.0.1:8000/oauth/callback",
+	// 	Scopes:       []string{},
+	// 	Endpoint:     github.Endpoint,
+	// }, nil
+	return oauth2.Config{}, nil
 }

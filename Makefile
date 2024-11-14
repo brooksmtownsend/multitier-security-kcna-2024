@@ -21,10 +21,3 @@ run-wasm: build-wasm-tgo ## Run this Wasm app
 
 inspect-wasm: build-wasm-tgo ## Inspect this Wasm app
 	wash inspect --wit ./build/http-hello-world.wasm
-
-# TODO: Should setup some make rules to run the app and setup secrets
-seed-secrets-wasm: ## Put OAuth secrets in secret store
-	source .env_id
-	secrets-nats-kv put client_id
-	source .env_secret
-	secrets-nats-kv put client_secret
