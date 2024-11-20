@@ -15,8 +15,8 @@ var (
 )
 
 func init() {
-	// Register the handleRequest function as the handler for all incoming requests.
-	wasihttp.HandleFunc(handleRequest)
+	// Register the http.Handler returned by Router as the handler for all incoming requests.
+	wasihttp.Handle(Router())
 }
 
 // Since we don't run this program like a CLI, the `main` function is empty. Instead,

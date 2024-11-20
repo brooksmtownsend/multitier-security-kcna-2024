@@ -8,18 +8,14 @@ import (
 	"net/http"
 )
 
-var (
-	httpClient = http.Client{}
-)
+var httpClient = http.Client{}
 
 func main() {
-	// Register our HTTP handlers
-	http.HandleFunc("/", handleRequest)
-
-	// Start the server
+	router := Router()
 	port := ":8080"
 	fmt.Printf("Starting server on %s\n", port)
-	if err := http.ListenAndServe(port, nil); err != nil {
+	// Start the server
+	if err := http.ListenAndServe(port, router); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
