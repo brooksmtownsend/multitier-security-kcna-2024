@@ -11,25 +11,20 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/julienschmidt/httprouter"
 	"golang.org/x/oauth2"
 )
 
-func handleRequest(w http.ResponseWriter, r *http.Request) {
-	switch {
-	case r.Method == http.MethodGet && r.URL.Path == "/":
-		rootHandler(w, r)
-	case r.Method == http.MethodGet && r.URL.Path == "/hello":
-		helloHandler(w, r)
-	case r.Method == http.MethodGet && r.URL.Path == "/hello-file":
-		helloFileHandler(w, r)
-	// OAuth Implementation
-	case r.Method == http.MethodGet && r.URL.Path == "/login":
-		loginHandler(w, r)
-	case r.Method == http.MethodGet && r.URL.Path == "/oauth/callback":
-		callbackHandler(w, r)
-	default:
-		http.Error(w, "Not found", http.StatusNotFound)
-	}
+// Router creates a [http.Handler] and registers the application-specific
+// routes with their respective handlers for the application.
+func Router() http.Handler {
+	router := httprouter.New()
+	router.HandlerFunc(http.MethodGet, "/", rootHandler)
+	router.HandlerFunc(http.MethodGet, "/hello", helloHandler)
+	router.HandlerFunc(http.MethodGet, "/hello-file", helloFileHandler)
+	router.HandlerFunc(http.MethodGet, "/login", loginHandler)
+	router.HandlerFunc(http.MethodGet, "/oauth/callback", callbackHandler)
+	return router
 }
 
 // Simple root handler to return an HTML page
